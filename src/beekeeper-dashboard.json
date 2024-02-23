@@ -1,0 +1,1230 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_MYSQL",
+      "label": "mysql",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.3.1"
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "panels": [],
+      "title": "Hive $hives",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1.5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 5
+              },
+              {
+                "color": "#EAB839",
+                "value": 15
+              },
+              {
+                "color": "red",
+                "value": 20
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT convert_tz(m.timestamp,'Europe/Rome','UTC') as time, m.value as temperature\nFROM beekeeper.measurement as m INNER JOIN beekeeper.node as n \nON m.node_id = n.id\nWHERE m.type = 'temperature' AND n.hive_id = ${hives}\nORDER BY timestamp DESC\nLIMIT 50",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Temperature",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "humidity",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT convert_tz(m.timestamp,'Europe/Rome','UTC') as time, m.value as humidity\nFROM beekeeper.measurement as m INNER JOIN beekeeper.node as n \nON m.node_id = n.id\nWHERE m.type = 'humidity' AND n.hive_id = ${hives}\nORDER BY timestamp DESC\nLIMIT 50",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Humidity",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ppm",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT convert_tz(m.timestamp,'Europe/Rome','UTC') as time, m.value as CO2\nFROM beekeeper.measurement as m INNER JOIN beekeeper.node as n \nON m.node_id = n.id\nWHERE m.type = 'co2' AND n.hive_id = ${hives}\nORDER BY timestamp DESC\nLIMIT 50",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "CO2",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dB",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT convert_tz(m.timestamp,'Europe/Rome','UTC') as time, m.value as noise\nFROM beekeeper.measurement as m INNER JOIN beekeeper.node as n \nON m.node_id = n.id\nWHERE m.type = 'noise' AND n.hive_id = ${hives}\nORDER BY timestamp DESC\nLIMIT 50",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Noise",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "rothz",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT convert_tz(m.timestamp,'Europe/Rome','UTC') as time, m.value as frequency\nFROM beekeeper.measurement as m INNER JOIN beekeeper.node as n \nON m.node_id = n.id\nWHERE m.type = 'frequency' AND n.hive_id = ${hives}\nORDER BY timestamp DESC\nLIMIT 50",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Frequency",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 17
+      },
+      "id": 13,
+      "options": {
+        "code": {
+          "language": "markdown",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<b>Temperature/Humidity/CO<sub>2</sub> Sensor</b>: <span id='thc' style=\"color:#00ff00\">${thc_status}s</span><br/>\n<b>Frequency/Noise Sensor</b>: <span id='fn' style=\"color:#00ff00\">${fn_status}s</span><br/>\n<b>Weight Sensor</b>: <span id='w' style=\"color:#00ff00\">${w_status}s</span><br/>\n<b>Bees Counter Sensor</b>: <span id='c' id='bcs' style=\"color:#00ff00\">${c_status}s</span><br/>\n<b>Temperature Actuator</b>: <span id='ta' style=\"color:#00ff00\">${ta_status}s</span><br/>\n<b>Ventilation Actuator</b>: <span id='va' style=\"color:#00ff00\">${va_status}s</span><br/>\n\n<script>\n  if(document.getElementById('thc').innerHTML === 's') {\n    document.getElementById('thc').innerHTML = 'None'\n    document.getElementById('thc').style = 'color:#ff0000'\n  }\n  if(document.getElementById('fn').innerHTML === 's') {\n    document.getElementById('fn').innerHTML = 'None'\n    document.getElementById('fn').style = 'color:#ff0000'\n  }\n  if(document.getElementById('c').innerHTML === 's') {\n    document.getElementById('c').innerHTML = 'None'\n    document.getElementById('c').style = 'color:#ff0000'\n  }\n  if(document.getElementById('w').innerHTML === 's') {\n    document.getElementById('w').innerHTML = 'None'\n    document.getElementById('w').style = 'color:#ff0000'\n  }\n  if(document.getElementById('va').innerHTML === 's') {\n    document.getElementById('va').innerHTML = 'None'\n    document.getElementById('va').style = 'color:#ff0000'\n  }\n  if(document.getElementById('ta').innerHTML === 's') {\n    document.getElementById('ta').innerHTML = 'None'\n    document.getElementById('ta').style = 'color:#ff0000'\n  }\n</script>",
+        "mode": "html"
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "builder",
+          "format": "table",
+          "rawSql": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Elapsed Time from Last Communication",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 17
+      },
+      "id": 14,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<b>Temperature/Humidity/CO<sub>2</sub> Sensor</b>: <span id='thc2' style=\"color:#00ff00\"></span><br/>\n<b>Frequency/Noise Sensor</b>: <span id='fn2' style=\"color:#00ff00\"></span><br/>\n<b>Weight Sensor</b>: <span id='w2' style=\"color:#00ff00\"></span><br/>\n<b>Bees Counter Sensor</b>: <span id='c2' id='bcs' style=\"color:#00ff00\"></span><br/>\n<b>Temperature Actuator</b>: <span id='ta2' style=\"color:#00ff00\"></span><br/>\n<b>Ventilation Actuator</b>: <span id='va2' style=\"color:#00ff00\"></span><br/>\n\n<span id='thc31' style='visibility:hidden'>${thc_status}</span>\n<span id='thc32' style='visibility:hidden'>${thc_communication_time}</span>\n<span id='fn31' style='visibility:hidden'>${fn_status}</span>\n<span id='fn32' style='visibility:hidden'>${fn_communication_time}</span>\n<span id='c31' style='visibility:hidden'>${c_status}</span>\n<span id='c32' style='visibility:hidden'>${c_communication_time}</span>\n<span id='w31' style='visibility:hidden'>${w_status}</span>\n<span id='w32' style='visibility:hidden'>${w_communication_time}</span>\n<span id='ta31' style='visibility:hidden'>${ta_status}</span>\n<span id='ta32' style='visibility:hidden'>${ta_communication_time}</span>\n<span id='va31' style='visibility:hidden'>${va_status}</span>\n<span id='va32' style='visibility:hidden'>${va_communication_time}</span>\n\n<script>\n  var threshold = 3\n\n  var thc_status = parseInt(document.getElementById('thc31').innerHTML)\n  var thc_communication_time = parseInt(document.getElementById('thc32').innerHTML)\n  if (!isNaN(thc_status)) {\n    if (thc_status < thc_communication_time) {\n      document.getElementById('thc2').innerHTML = 'Online'\n    } else if (thc_status > thc_communication_time && thc_status < threshold * thc_communication_time) {\n      document.getElementById('thc2').innerHTML = 'Maybe Offline'\n      document.getElementById('thc2').style = 'color:#ffff00'\n    } else {\n      document.getElementById('thc2').innerHTML = 'Offline'\n      document.getElementById('thc2').style = 'color:#ff0000'\n    } \n  } else {\n    document.getElementById('thc2').innerHTML = 'Not Available'\n    document.getElementById('thc2').style = 'color:#ff0000'\n  }\n\n  var fn_status = parseInt(document.getElementById('fn31').innerHTML)\n  var fn_communication_time = parseInt(document.getElementById('fn32').innerHTML)\n  if (!isNaN(fn_status)) {\n    if (fn_status < fn_communication_time) {\n      document.getElementById('fn2').innerHTML = 'Online'\n    } else if (fn_status > fn_communication_time && fn_status < threshold * fn_communication_time) {\n      document.getElementById('fn2').innerHTML = 'Maybe Offline'\n      document.getElementById('fn2').style = 'color:#ffff00'\n    } else {\n      document.getElementById('fn2').innerHTML = 'Offline'\n      document.getElementById('fn2').style = 'color:#ff0000'\n    }\n  } else {\n    document.getElementById('fn2').innerHTML = 'Not Available'\n    document.getElementById('fn2').style = 'color:#ff0000'\n  }\n\n  var w_status = parseInt(document.getElementById('w31').innerHTML)\n  var w_communication_time = parseInt(document.getElementById('w32').innerHTML)\n  if (!isNaN(w_status)) {\n    if (w_status < w_communication_time) {\n      document.getElementById('w2').innerHTML = 'Online'\n    } else if (w_status > w_communication_time && w_status < threshold * w_communication_time) {\n      document.getElementById('w2').innerHTML = 'Maybe Offline'\n      document.getElementById('w2').style = 'color:#ffff00'\n    } else {\n      document.getElementById('w2').innerHTML = 'Offline'\n      document.getElementById('w2').style = 'color:#ff0000'\n    }\n  } else {\n    document.getElementById('w2').innerHTML = 'Not Available'\n    document.getElementById('w2').style = 'color:#ff0000'\n  }\n\n  var c_status = parseInt(document.getElementById('c31').innerHTML)\n  var c_communication_time = parseInt(document.getElementById('c32').innerHTML)\n  if (!isNaN(c_status)) {\n    if (c_status < c_communication_time) {\n      document.getElementById('c2').innerHTML = 'Online'\n    } else if (c_status > c_communication_time && c_status < threshold * c_communication_time) {\n      document.getElementById('c2').innerHTML = 'Maybe Offline'\n      document.getElementById('c2').style = 'color:#ffff00'\n    } else {\n      document.getElementById('c2').innerHTML = 'Offline'\n      document.getElementById('c2').style = 'color:#ff0000'\n    }\n  } else {\n    document.getElementById('c2').innerHTML = 'Not Available'\n    document.getElementById('c2').style = 'color:#ff0000'\n  }\n\n  var ta_status = parseInt(document.getElementById('ta31').innerHTML)\n  var ta_communication_time = parseInt(document.getElementById('ta32').innerHTML)\n  if (!isNaN(ta_status)) {\n    if (ta_status < ta_communication_time) {\n      document.getElementById('ta2').innerHTML = 'Online'\n    } else if (ta_status > ta_communication_time && ta_status < threshold * ta_communication_time) {\n      document.getElementById('ta2').innerHTML = 'Maybe Offline'\n      document.getElementById('ta2').style = 'color:#ffff00'\n    } else {\n      document.getElementById('ta2').innerHTML = 'Offline'\n      document.getElementById('ta2').style = 'color:#ff0000'\n    }\n  } else {\n    document.getElementById('ta2').innerHTML = 'Not Available'\n    document.getElementById('ta2').style = 'color:#ff0000'\n  }\n\n  var va_status = parseInt(document.getElementById('va31').innerHTML)\n  var va_communication_time = parseInt(document.getElementById('va32').innerHTML)\n  if (!isNaN(va_status)) {\n    if (va_status < va_communication_time) {\n      document.getElementById('va2').innerHTML = 'Online'\n    } else if (va_status > va_communication_time && va_status < threshold * va_communication_time) {\n      document.getElementById('va2').innerHTML = 'Maybe Offline'\n      document.getElementById('va2').style = 'color:#ffff00'\n    } else {\n      document.getElementById('va2').innerHTML = 'Offline'\n      document.getElementById('va2').style = 'color:#ff0000'\n    }\n  } else {\n    document.getElementById('va2').innerHTML = 'Not Available'\n    document.getElementById('va2').style = 'color:#ff0000'\n  }\n\n</script>",
+        "mode": "html"
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "builder",
+          "format": "table",
+          "rawSql": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Node Status",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "masskg",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 12,
+        "y": 17
+      },
+      "id": 11,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT convert_tz(m.timestamp,'Europe/Rome','UTC') as time, m.value as weight\nFROM beekeeper.measurement as m INNER JOIN beekeeper.node as n \nON m.node_id = n.id\nWHERE m.type = 'weight' AND n.hive_id = ${hives}\nORDER BY timestamp DESC\nLIMIT 50",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Weight",
+      "transformations": [],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 17
+      },
+      "id": 12,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "dataset": "beekeeper",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT convert_tz(m.timestamp,'Europe/Rome','UTC') as time, m.value as counter_in, n.value as counter_out\nFROM beekeeper.measurement AS m INNER JOIN beekeeper.measurement AS n ON m.timestamp = n.timestamp INNER JOIN beekeeper.node as o\nON m.node_id = o.id\nWHERE m.type = 'counter_in' AND n.type = 'counter_out' AND o.hive_id = ${hives}\nORDER BY time DESC\nLIMIT 5",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Bees Counter",
+      "transformations": [],
+      "type": "barchart"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT name FROM beekeeper.area;",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Area",
+        "multi": false,
+        "name": "area_name",
+        "options": [],
+        "query": "SELECT name FROM beekeeper.area;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT id FROM beekeeper.hive WHERE area_name = $area_name;",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Hives",
+        "multi": false,
+        "name": "hives",
+        "options": [],
+        "query": "SELECT id FROM beekeeper.hive WHERE area_name = $area_name;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'thc';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "thc_status",
+        "options": [],
+        "query": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'thc';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'fn';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "fn_status",
+        "options": [],
+        "query": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'fn';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'w';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "w_status",
+        "options": [],
+        "query": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'w';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'c';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "c_status",
+        "options": [],
+        "query": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'c';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'ta';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": true,
+        "name": "ta_status",
+        "options": [],
+        "query": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'ta';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'va';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "va_status",
+        "options": [],
+        "query": "SELECT CONVERT_TZ(NOW(), 'system', 'Europe/Rome') - last_communication as elapsed_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'va';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'thc';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "thc_communication_time",
+        "options": [],
+        "query": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'thc';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'fn';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "fn_communication_time",
+        "options": [],
+        "query": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'fn';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'w';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "w_communication_time",
+        "options": [],
+        "query": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'w';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'c';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "c_communication_time",
+        "options": [],
+        "query": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'c';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'ta';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "ta_communication_time",
+        "options": [],
+        "query": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'ta';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'va';",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "va_communication_time",
+        "options": [],
+        "query": "SELECT communication_time\nFROM beekeeper.node\nWHERE hive_id = ${hives} AND type = 'va';",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Beekeeper Dashboard",
+  "uid": "d53804ee-480a-4548-a755-787924155855",
+  "version": 20,
+  "weekStart": ""
+}

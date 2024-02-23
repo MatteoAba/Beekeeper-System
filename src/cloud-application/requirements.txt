@@ -1,0 +1,4 @@
+CoAPthon3==1.0.2
+mysql-connector-python==8.2.0
+paho-mqtt==1.6.1
+protobuf==4.21.12
